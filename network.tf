@@ -72,7 +72,7 @@ resource "azurerm_public_ip" "linux_command_pip" {
 
 # Create 3 Network Interfaces for WebApp VMs
 resource "azurerm_network_interface" "nics" {
-  count               = 2
+  count               = var.counter
   name                = "${var.lb_backend_ap_ip_configuration_name}-${count.index + 1}"
   location            = azurerm_resource_group.staging_rg.location
   resource_group_name = azurerm_resource_group.staging_rg.name
