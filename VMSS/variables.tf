@@ -1,0 +1,13 @@
+variable "RSG_name" {}
+variable "location" {}
+variable "application_port" {}
+variable "admin_user" {}
+variable "admin_password" {}
+variable "VMSS_nsg_id" {}
+variable "VMSS_subnet_id" {}
+variable "BEpool_id" {}
+variable "LB_natpool_id" {}
+variable "VMSS_size" {}
+variable "capacity" {}
+variable "minimum" {}
+variable "maximum" {}
