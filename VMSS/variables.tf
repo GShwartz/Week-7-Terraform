@@ -1,4 +1,4 @@
-variable "RSG_name" {}
+variable "rg_name" {}
 variable "location" {}
 variable "application_port" {}
 variable "admin_user" {}

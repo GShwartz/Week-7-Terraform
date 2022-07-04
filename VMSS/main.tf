@@ -1,6 +1,6 @@
 resource "azurerm_linux_virtual_machine_scale_set" "VMSS" {
   name                            = "VMSS"
-  resource_group_name             = var.RSG_name
+  resource_group_name             = var.rg_name
   location                        = var.location
   sku                             = var.VMSS_size
   instances                       = var.capacity
@@ -37,8 +37,6 @@ source_image_reference {
     caching              = "ReadWrite"
   }
 
-  # Since these can change via auto-scaling outside of Terraform,
-  # let's ignore any changes to the number of instances
   lifecycle {
     ignore_changes = [instances]
   }
@@ -49,7 +47,7 @@ source_image_reference {
 #scaling metrics
 resource "azurerm_monitor_autoscale_setting" "scaling" {
   name                = "autoscale-config"
-  resource_group_name = var.RSG_name
+  resource_group_name = var.rg_name
   location            = var.location
   target_resource_id  = azurerm_linux_virtual_machine_scale_set.VMSS.id
 
@@ -107,18 +105,3 @@ resource "azurerm_monitor_autoscale_setting" "scaling" {
 
 }
 
-#runing a custom script (can see content in the link) to install python and update\upgrade
-#in order to be able to configure machines via Ansible
-#resource "azurerm_virtual_machine_scale_set_extension" "script" {
-#  name                         = "script"
-#  publisher                    = "Microsoft.OSTCExtensions"
-#  type                         = "CustomScriptForLinux"
-#  type_handler_version         = "1.2"
-#  virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.VMSS.id
-#  settings = <<SETTINGS
-#    {
-#"fileUris": ["https://avshastorage.blob.core.windows.net/files/script.sh"],
-#    "commandToExecute": "script.sh"
-#  }
-#SETTINGS
-#}
