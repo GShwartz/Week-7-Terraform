@@ -40,24 +40,9 @@ resource "azurerm_network_security_group" "VMSS_nsg" {
     protocol                     = "Tcp"
     source_port_range            = "*"
     destination_port_range       = "22"
-    source_address_prefix        = var.myip
+    source_address_prefix        = "*"
     destination_address_prefixes = var.node_address_prefix
   }
-
-
-#Implicit_deny all inbound traffic with lower priority
-   security_rule {
-    name                       = "Implicit_deny"
-    priority                   = 400
-    direction                  = "Inbound"
-    access                     = "Deny"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
 }
 
 #assosiating NSG to VMSS(app) subnet

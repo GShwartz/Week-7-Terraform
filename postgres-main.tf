@@ -34,21 +34,7 @@ resource "azurerm_network_security_group" "db_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "5432"
-    source_address_prefixes    = azurerm_subnet.db_subnet.address_prefixes
-    destination_address_prefix = "10.0.2.0/28"
-
-  }
-
-  # Deny Everything Else
-  security_rule {
-    name                       = "Deny_All"
-    priority                   = 1002
-    direction                  = "Inbound"
-    access                     = "Deny"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
+    source_address_prefixes    = azurerm_subnet.vmss-subnet.address_prefixes
     destination_address_prefix = "10.0.2.0/28"
 
   }
@@ -91,7 +77,6 @@ resource "azurerm_postgresql_flexible_server" "postgres_flex_server" {
   storage_mb             = 32768
   sku_name               = "B_Standard_B1ms"
   backup_retention_days  = 7
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.link]
 
 }
 
@@ -104,7 +89,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "postgres_configurat
 }
 #creates Database in PostgreSQL Flexible Server
 resource "azurerm_postgresql_flexible_server_database" "postgres" {
-  name      = "postgres"
+  name      = "weightdbprod"
   server_id = azurerm_postgresql_flexible_server.postgres_flex_server.id
   collation = "en_US.UTF8"
   charset   = "UTF8"

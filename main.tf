@@ -1,7 +1,13 @@
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg_name
+  location = var.location
+}
+
 #calling module VMSS
 module "VMSS" {
   source         = "./VMSS"
-  RSG_name       = var.rg_name
+  rg_name       = var.rg_name
   location       = var.location
   VMSS_size      = var.size
   VMSS_nsg_id    = azurerm_network_security_group.VMSS_nsg.id
@@ -24,9 +30,5 @@ resource "random_string" "fqdn" {
   number  = false
 }
 
-# Create a resource group
-resource "azurerm_resource_group" "rg" {
-  name     = var.rg_name
-  location = var.location
-}
+
 

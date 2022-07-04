@@ -75,9 +75,16 @@ resource "azurerm_lb_outbound_rule" "LB_out" {
   name                    = "WEB"
   protocol                = "All"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
+  allocated_outbound_ports = 64000
 
   frontend_ip_configuration {
     name = "PublicIPAddress"
   }
+}
+
+resource "azurerm_availability_set" "as" {
+  location            = var.location
+  name                = "as"
+  resource_group_name = var.rg_name
 }
 
